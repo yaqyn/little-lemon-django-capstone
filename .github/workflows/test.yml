@@ -1,0 +1,38 @@
+name: Django MySQL tests
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: ci-only-password
+          MYSQL_DATABASE: littlelemon
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost --silent"
+          --health-interval=5s --health-timeout=5s --health-retries=30
+    env:
+      DJANGO_SECRET_KEY: ci-only-secret-never-for-deployment
+      DJANGO_DEBUG: "True"
+      DB_NAME: littlelemon
+      DB_USER: root
+      DB_PASSWORD: ci-only-password
+      DB_HOST: 127.0.0.1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev pkg-config
+      - run: pip install pipenv && pipenv sync --dev
+      - run: pipenv run python manage.py check
+      - run: pipenv run python manage.py makemigrations --check --dry-run
+      - run: pipenv run python manage.py migrate --noinput
+      - run: pipenv run python manage.py seed_menu
+      - run: pipenv run python manage.py test
+      - run: pipenv run python manage.py collectstatic --noinput
+      - run: node --test scripts/booking.test.cjs

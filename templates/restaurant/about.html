@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% load static %}{% block title %}About{% endblock %}{% block content %}<section class="page-heading wrap">
+<p class="intro">Welcome to Little Lemon</p>
+<h1>
+  Good food brings
+  <br>
+  people together.
+</h1>
+<p>Our menu takes its cues from the Mediterranean: crisp vegetables, herbs, olive oil, and a generous squeeze of lemon.</p>
+</section>
+<section class="about-grid wrap section">
+  <img src="{% static 'images/table.svg' %}"
+       width="640"
+       height="520"
+       alt="An illustrated table set for a Mediterranean meal">
+  <div>
+    <h2>A neighborhood table</h2>
+    <p>Little Lemon is a fictional restaurant concept that celebrates relaxed meals and familiar hospitality. Start with a bright salad, share a plate, and leave room for something sweet.</p>
+    <p>Browse the menu, choose a time, and try the reservation experience. This demonstration accepts one reservation per hourly slot, from 10 AM to 8 PM, in Chicago local time.</p>
+    <a class="button" href="{% url 'menu' %}">Find your next favorite</a>
+  </div>
+</section>
+{% endblock %}

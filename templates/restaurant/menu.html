@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block title %}Our menu{% endblock %}{% block content %}<section class="page-heading wrap">
+<p class="intro">Fresh from the kitchen</p>
+<h1>Made to be enjoyed.</h1>
+<p>Mediterranean-inspired favorites, from the first bite to the last spoonful. Prices are in US dollars.</p>
+</section>
+<section class="wrap section menu-grid" aria-label="Restaurant menu">{% for item in menu_items %}{% include "restaurant/menu_card.html" %}{% empty %}<p>The menu is being prepared. Please check back soon.</p>{% endfor %}</section>{% endblock %}

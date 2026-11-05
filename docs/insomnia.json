@@ -1,0 +1,402 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-11-05T00:00:00.000Z",
+  "__export_source": "little-lemon-capstone",
+  "resources": [
+    {
+      "_id": "wrk_littlelemon",
+      "_type": "workspace",
+      "name": "Little Lemon Capstone",
+      "description": "Local peer-review API requests. Set credentials and tokens yourself.",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_littlelemon",
+      "_type": "environment",
+      "parentId": "wrk_littlelemon",
+      "name": "Local development",
+      "data": {
+        "base_url": "http://127.0.0.1:8000",
+        "token": "",
+        "username": "",
+        "password": "",
+        "menu_item_id": 1,
+        "category_id": 1,
+        "booking_id": 1,
+        "reservation_date": "2027-06-15"
+      }
+    },
+    {
+      "_id": "req_lemon_2",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Register user",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/users/",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"{{ _.username }}\",\n  \"password\": \"{{ _.password }}\"\n}"
+      }
+    },
+    {
+      "_id": "req_lemon_3",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Log in (copy auth_token to environment)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/token/login/",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"{{ _.username }}\",\n  \"password\": \"{{ _.password }}\"\n}"
+      }
+    },
+    {
+      "_id": "req_lemon_4",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Current user",
+      "method": "GET",
+      "url": "{{ _.base_url }}/auth/users/me/",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_lemon_5",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "List categories",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/categories/",
+      "headers": [],
+      "parameters": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_lemon_6",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Create category (staff)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/categories/",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"slug\": \"specials\",\n  \"title\": \"Specials\"\n}"
+      }
+    },
+    {
+      "_id": "req_lemon_7",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "List menu",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/menu-items/",
+      "headers": [],
+      "parameters": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_lemon_8",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Search and sort menu",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/menu-items/?search=lemon&ordering=price",
+      "headers": [],
+      "parameters": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_lemon_9",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Create menu item (staff)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/menu-items/",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"title\": \"Greek salad\",\n  \"price\": \"12.50\",\n  \"featured\": true,\n  \"category\": \"{{ _.category_id }}\",\n  \"description\": \"Tomatoes, cucumber and olives\"\n}"
+      }
+    },
+    {
+      "_id": "req_lemon_10",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Get menu item",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/menu-items/{{ _.menu_item_id }}/",
+      "headers": [],
+      "parameters": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_lemon_11",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Replace menu item (staff)",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/api/menu-items/{{ _.menu_item_id }}/",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"title\": \"Greek salad\",\n  \"price\": \"13.00\",\n  \"featured\": false,\n  \"category\": \"{{ _.category_id }}\",\n  \"description\": \"Fresh seasonal salad\"\n}"
+      }
+    },
+    {
+      "_id": "req_lemon_12",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Update menu price (staff)",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/api/menu-items/{{ _.menu_item_id }}/",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"price\": \"13.50\"\n}"
+      }
+    },
+    {
+      "_id": "req_lemon_13",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Delete menu item (staff)",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/api/menu-items/{{ _.menu_item_id }}/",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_lemon_14",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Create booking (public)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/bookings/",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"first_name\": \"Jordan\",\n  \"reservation_date\": \"{{ _.reservation_date }}\",\n  \"reservation_slot\": 18\n}"
+      }
+    },
+    {
+      "_id": "req_lemon_15",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Public date availability",
+      "method": "GET",
+      "url": "{{ _.base_url }}/bookings?date={{ _.reservation_date }}",
+      "headers": [],
+      "parameters": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_lemon_16",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "List bookings (staff)",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/bookings/",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_lemon_17",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Filter bookings by date (staff)",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/bookings/?date={{ _.reservation_date }}",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_lemon_18",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Get booking (staff)",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/bookings/{{ _.booking_id }}/",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_lemon_19",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Replace booking (staff)",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/api/bookings/{{ _.booking_id }}/",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"first_name\": \"Jordan\",\n  \"reservation_date\": \"{{ _.reservation_date }}\",\n  \"reservation_slot\": 17\n}"
+      }
+    },
+    {
+      "_id": "req_lemon_20",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Update booking slot (staff)",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/api/bookings/{{ _.booking_id }}/",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"reservation_slot\": 19\n}"
+      }
+    },
+    {
+      "_id": "req_lemon_21",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Delete booking (staff)",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/api/bookings/{{ _.booking_id }}/",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_lemon_22",
+      "_type": "request",
+      "parentId": "wrk_littlelemon",
+      "name": "Log out and revoke token",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/token/logout/",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Token {{ _.token }}"
+        }
+      ],
+      "parameters": [],
+      "authentication": {}
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+Cover: forest green #24483e background, white #ffffff text, lemon yellow #f4ce14 accent, pale green #cad7c4 leaf. Section icons use the workspace canonical geometry with yellow strokes on a forest green backing. Artwork is original SVG illustration, not an execution screenshot.

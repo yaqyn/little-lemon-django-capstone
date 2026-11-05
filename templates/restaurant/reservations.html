@@ -1,0 +1,37 @@
+{% extends "base.html" %}{% load static %}{% block title %}Reservations{% endblock %}{% block content %}<section class="page-heading wrap">
+<p class="intro">Plan your visit</p>
+<h1>A look at the table.</h1>
+<p>See which times are already reserved. Guest names remain private; restaurant staff can manage full records in the admin.</p>
+</section>
+<section class="wrap section availability-panel reservations-page"
+         data-booking-app>
+  <div class="field">
+    <label for="reservation_date">Reservation date</label>
+    <input type="date"
+           id="reservation_date"
+           name="reservation_date"
+           aria-describedby="reservation_date-error">
+    <p id="reservation_date-error" class="field-error"></p>
+  </div>
+  <h2>
+    Reservations for <span id="selected-date">your selected date</span>
+  </h2>
+  <p id="availability-status" role="status" aria-live="polite">Loading reservations…</p>
+  <ul id="reservation-list" class="reservation-list">
+  </ul>
+  <button type="button"
+          class="retry-button"
+          id="retry-availability"
+          hidden
+          disabled>Retry availability</button>
+  <p>
+    <a class="button" href="{% url 'book' %}">Book a table</a>
+  </p>
+  <noscript>
+    <p>Enable JavaScript to load reservations, or <a href="/bookings?date={% now 'Y-m-d' %}">view today's reservations as JSON</a>.</p>
+  </noscript>
+</section>
+{% endblock %}
+{% block scripts %}
+  <script src="{% static 'js/booking.js' %}" defer></script>
+{% endblock %}
