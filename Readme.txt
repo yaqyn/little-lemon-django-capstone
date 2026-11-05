@@ -2,9 +2,8 @@ Little Lemon Restaurant - Django REST API Capstone
 =================================================
 
 A fictional restaurant website and MySQL-backed menu/reservation API, built for
-Meta's expert-guided Back-End Developer Capstone on Coursera, part of the Meta
+Meta's expert-guided Back-End Developer Capstone, part of the Meta
 Back-End Developer Professional Certificate. The course is taught by Meta Experts.
-Course: https://www.coursera.org/learn/back-end-developer-capstone
 
 Implementation and verification: Abdulrahman M. Yaqyn.
 Technologies: Python 3.14, Django 5.2,
@@ -61,7 +60,8 @@ Route                      Methods    Description
 /menu/                     GET        MySQL-backed menu
 /menu/{id}/                GET        Menu item details
 /book/                     GET, POST  Booking page / CSRF-protected JSON creation
-/reservations/             GET        Date-selected public reservation availability
+/reservations/             GET        Date-selected availability and all bookings as JSON
+/reservations/?format=json GET        All bookings across all dates as a JSON array
 /bookings?date=YYYY-MM-DD   GET        Public compatibility JSON (no slash required)
 /bookings/?date=YYYY-MM-DD  GET        Same JSON, trailing slash accepted
 /admin/                    GET, POST  Django administrator interface
@@ -274,3 +274,15 @@ They do not verify browser rendering. With the local server already running:
   pipenv run python scripts/smoke_http.py
 The HTTP checks use the configured development database, create temporary records,
 then remove them. Never run against a production database.
+
+PREVIOUS TABLE RESERVATION ASSIGNMENT
+-------------------------------------
+The same project also supports the 13 booking-assignment requirements. See
+docs/booking-assignment.md for the audit, verification commands and limits.
+/reservations/ displays every booking as formatted JSON below the date widget.
+/reservations/?format=json returns the same complete array without HTML.
+/bookings?date=YYYY-MM-DD continues to return only the requested date.
+Public responses redact names as Reserved; staff signed into Django Admin can
+view actual names. Token authentication for the management APIs is unchanged.
+The /book/ HTML source includes an active fetch() transport used by the shared
+booking script. The native date field starts at today's Chicago date.

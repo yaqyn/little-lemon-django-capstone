@@ -1,1 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="480" viewBox="0 0 1200 480" role="img" aria-labelledby="title desc"><title id="title">Little Lemon</title><desc id="desc">Restaurant menu and reservations, illustrated with a lemon and leaf on forest green.</desc><rect width="1200" height="480" fill="#24483e"/><path d="M800 240c20-115 165-145 215-45 20 35 8 85-27 116-65 58-145 46-180-8-12-19-17-44-8-63Z" fill="#f4ce14"/><path d="M974 176c-4-71 36-113 113-101-13 70-55 101-113 101Z" fill="#cad7c4"/><path d="M977 176c9-35 42-63 76-77" fill="none" stroke="#24483e" stroke-width="5"/><path d="m803 244-20 9 7 20m217-73 21-4-9-19" fill="none" stroke="#f4ce14" stroke-width="14" stroke-linecap="round"/><text x="78" y="195" fill="#ffffff" font-family="Georgia,serif" font-size="86">Little Lemon</text><text x="82" y="265" fill="#ffffff" font-family="Arial,sans-serif" font-size="28">Meta expert-guided capstone</text><text x="82" y="308" fill="#ffffff" font-family="Arial,sans-serif" font-size="28">Restaurant website and REST APIs</text><path d="M82 363h520" stroke="#cad7c4" stroke-width="2"/><text x="82" y="406" fill="#cad7c4" font-family="Arial,sans-serif" font-size="22">Django · REST API · MySQL</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="640" viewBox="0 0 1600 640" role="img" aria-labelledby="title desc">
+  <title id="title">Little Lemon — restaurant website and reservation APIs</title>
+  <desc id="desc">A forest-green restaurant project cover with white typography, an illustrated lemon on a plate, and a small padded white Meta badge in the bottom-right corner.</desc>
+  <rect width="1600" height="640" fill="#24483e"/>
+  <path d="M96 104h48" stroke="#f4ce14" stroke-width="5" stroke-linecap="round"/>
+  <text x="164" y="112" fill="#cad7c4" font-family="Arial, Helvetica, sans-serif" font-size="25">Back-End Developer Capstone</text>
+  <text x="90" y="266" fill="#fff" font-family="Georgia, Times New Roman, serif" font-size="126" letter-spacing="-5">Little Lemon</text>
+  <text x="98" y="344" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="33">Restaurant website &amp; reservation APIs</text>
+  <text x="98" y="396" fill="#cad7c4" font-family="Arial, Helvetica, sans-serif" font-size="25">Browse the menu. Find an hour. Book a table.</text>
+  <path d="M98 484h780" stroke="#638175" stroke-width="1"/>
+  <text x="98" y="548" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="25">Django</text>
+  <path d="M218 528v25M405 528v25" stroke="#638175" stroke-width="1"/>
+  <text x="250" y="548" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="25">REST API</text>
+  <text x="438" y="548" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="25">MySQL</text>
+  <g aria-hidden="true">
+    <circle cx="1242" cy="272" r="193" fill="#2e5548"/>
+    <circle cx="1242" cy="272" r="173" fill="none" stroke="#5d7b69" stroke-width="1.5"/>
+    <circle cx="1242" cy="272" r="143" fill="#24483e" stroke="#456b58" stroke-width="1"/>
+    <g transform="rotate(-27 1235 276)">
+      <path d="M1107 269c13-62 63-99 129-99 65 0 113 40 128 99l15 11-16 12c-17 60-65 95-128 95-65 0-115-37-129-97l-15-10z" fill="#f4ce14"/>
+      <path d="M1148 236c19-23 43-34 74-35" fill="none" stroke="#fff3a2" stroke-width="8" stroke-linecap="round"/>
+      <path d="M1312 177c18-58 65-78 116-55-28 53-70 69-116 55Z" fill="#cad7c4"/>
+      <path d="M1316 176c25-23 49-36 75-40" fill="none" stroke="#42664e" stroke-width="3" stroke-linecap="round"/>
+      <g fill="#d8b90b"><circle cx="1286" cy="329" r="2"/><circle cx="1302" cy="315" r="2.5"/><circle cx="1310" cy="335" r="2"/><circle cx="1325" cy="304" r="2"/><circle cx="1271" cy="345" r="2"/></g>
+    </g>
+    <path d="M1416 109c11-22 30-35 51-40" fill="none" stroke="#cad7c4" stroke-width="2" stroke-linecap="round"/>
+    <path d="M1445 139c17-11 34-13 51-9" fill="none" stroke="#cad7c4" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(1230 504) scale(0.78)"><g transform="translate(0 0)"><rect width="360" height="124" rx="22" fill="#fff"/>
+    <g transform="translate(30 31) scale(0.059)"><defs><linearGradient id="meta-a" x1="332.6" x2="1411" y1="637.7" y2="692.2" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0064e1"/><stop offset=".4" stop-color="#0064e1"/><stop offset=".8" stop-color="#0073ee"/><stop offset="1" stop-color="#0082fb"/></linearGradient><linearGradient id="meta-b" x1="245.4" x2="245.4" y1="757.6" y2="359.7" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0082fb"/><stop offset="1" stop-color="#0064e0"/></linearGradient></defs><path d="M169.5 686.5c0 59.9 13.1 105.8 30.3 133.6 22.5 36.4 56 51.8 90.2 51.8 44.2 0 84.5-10.9 162.3-118.6C514.6 667.1 588 546 637.4 470l83.7-128.6c58.1-89.3 125.3-188.6 202.5-255.9C986.5 30.5 1054.5 0 1122.8 0c114.8 0 224.1 66.5 307.7 191.4 91.6 136.7 136 308.8 136 486.5 0 105.6-20.8 183.2-56.2 244.6-34.2 59.3-100.8 118.5-213 118.5V871.9c96 0 120-88.3 120-189.3 0-144-33.6-303.8-107.5-418-52.4-81-120.4-130.5-195.2-130.5-80.8 0-145.9 61.1-219.1 169.9-38.9 57.8-78.8 128.3-123.6 207.8l-49.4 87.5c-99.1 175.9-124.2 216-173.8 282.1C461.9 997.1 387.7 1041 290 1041c-115.8 0-189.1-50.2-234.4-125.8C18.5 853.5.3 772.6.3 680.5z" style="fill:#0081fb"/><path d="M133.7 203.3C211.3 83.7 323.2 0 451.6 0 525.9 0 599.8 22 677 85.1c84.4 68.9 174.4 182.5 286.7 369.6l40.2 67.1c97.2 162 152.5 245.3 184.8 284.6 41.6 50.5 70.8 65.5 108.6 65.5 96 0 120-88.3 120-189.3l149.2-4.7c0 105.6-20.8 183.2-56.2 244.6-34.2 59.3-100.8 118.5-213 118.5-69.7 0-131.5-15.2-199.8-79.6C1045 911.9 983.6 824 936.4 744.9L796 510.1c-70.5-117.8-135.2-205.6-172.6-245.4-40.2-42.8-92-94.5-174.5-94.5-66.9 0-123.6 46.9-171.1 118.7z" style="fill:url(#meta-a)"/><path d="M448.9 170.2c-66.9 0-123.6 46.9-171.1 118.7-67.2 101.4-108.3 252.5-108.3 397.6 0 59.9 13.1 105.8 30.3 133.6L55.6 915.2C18.5 853.5.3 772.6.3 680.5c0-167.6 46-342.3 133.4-477.2C211.3 83.7 323.2 0 451.6 0z" style="fill:url(#meta-b)"/></g>
+    <text x="145" y="83" fill="#18272e" font-family="Arial, Helvetica, sans-serif" font-weight="600" font-size="61" letter-spacing="-2">Meta</text></g></g>
+</svg>

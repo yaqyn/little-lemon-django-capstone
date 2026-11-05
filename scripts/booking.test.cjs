@@ -7,9 +7,21 @@ const source = fs.readFileSync(
   new URL("../static/js/booking.js", `file://${__filename}`),
   "utf8",
 );
+const template = fs.readFileSync(
+  new URL("../templates/restaurant/book.html", `file://${__filename}`),
+  "utf8",
+);
+const inlineFetchScript = [
+  ...template.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g),
+]
+  .map((match) => match[1])
+  .find((script) => script.includes("littleLemonBookingFetch"));
 const tick = () => new Promise((resolve) => setImmediate(resolve));
 
-function fixture(fetch) {
+function fixture(
+  fetch,
+  { search = "?date=2099-04-07", now, booking = true } = {},
+) {
   class Element {
     constructor(id) {
       this.id = id;
@@ -79,7 +91,11 @@ function fixture(fetch) {
   };
   const doc = {
     querySelector: () => app,
-    getElementById: (id) => nodes[id],
+    getElementById: (id) =>
+      !booking &&
+      ["booking-form", "reservation_slot", "first_name"].includes(id)
+        ? null
+        : nodes[id],
     createElement: (tag) => new Element(tag),
     addEventListener() {},
     hidden: false,
@@ -89,8 +105,8 @@ function fixture(fetch) {
     document: doc,
     window: {
       location: {
-        href: "http://localhost/book/?date=2099-04-07",
-        search: "?date=2099-04-07",
+        href: `http://localhost/${booking ? "book" : "reservations"}/${search}`,
+        search,
       },
       history: { replaceState() {} },
       addEventListener() {},
@@ -99,7 +115,16 @@ function fixture(fetch) {
     URL,
     URLSearchParams,
     Intl,
-    Date,
+    Date: now
+      ? class extends Date {
+          constructor(...args) {
+            super(...(args.length ? args : [now]));
+          }
+          static now() {
+            return Date.parse(now);
+          }
+        }
+      : Date,
     AbortController,
     Option: function (text, value) {
       this.textContent = text;
@@ -117,7 +142,17 @@ function fixture(fetch) {
       timers.delete(timer);
     },
   };
-  vm.runInNewContext(source, context, { filename: "booking.js" });
+  vm.createContext(context);
+  if (booking) {
+    assert.ok(
+      inlineFetchScript,
+      "Booking template must provide an active inline Fetch adapter.",
+    );
+    vm.runInContext(inlineFetchScript, context, {
+      filename: "book.html inline Fetch",
+    });
+  }
+  vm.runInContext(source, context, { filename: "booking.js" });
   return {
     nodes,
     submit,
@@ -262,4 +297,78 @@ test("rejected reservation preserves customer input and reports correction", asy
   assert.equal(ui.nodes.reservation_slot.attributes["aria-invalid"], "true");
   assert.equal(ui.nodes.reservation_slot.focused, true);
   assert.equal(ui.nodes.first_name.disabled, false);
+});
+
+test("opening the booking page selects today in Chicago and requests that date", async (t) => {
+  const urls = [];
+  const ui = fixture(
+    async (url) => {
+      urls.push(url);
+      return response([]);
+    },
+    { search: "", now: "2027-01-02T03:30:00Z" },
+  );
+  t.after(ui.cleanup);
+  await tick();
+  assert.equal(ui.nodes.reservation_date.value, "2027-01-01");
+  assert.equal(ui.nodes.reservation_date.min, "2027-01-01");
+  assert.equal(urls[0], "/bookings?date=2027-01-01");
+  assert.equal(ui.nodes["availability-status"].textContent, "No Bookings");
+});
+
+test("invalid date query falls back to today's Chicago date", async (t) => {
+  const ui = fixture(async () => response([]), {
+    search: "?date=not-a-date",
+    now: "2027-01-02T03:30:00Z",
+  });
+  t.after(ui.cleanup);
+  await tick();
+  assert.equal(ui.nodes.reservation_date.value, "2027-01-01");
+  assert.equal(ui.submit.disabled, false);
+});
+
+test("changing the date fetches only that date and replaces unavailable slots", async (t) => {
+  const urls = [];
+  const ui = fixture(async (url) => {
+    urls.push(url);
+    return response([
+      { reservation_slot: url.endsWith("2099-04-07") ? 12 : 16 },
+    ]);
+  });
+  t.after(ui.cleanup);
+  await tick();
+  ui.nodes.reservation_date.value = "2099-04-08";
+  await ui.nodes.reservation_date.emit("change");
+  await tick();
+  assert.deepEqual(urls, [
+    "/bookings?date=2099-04-07",
+    "/bookings?date=2099-04-08",
+  ]);
+  assert.equal(
+    ui.nodes.reservation_slot.options.find((option) => option.value === "12")
+      .disabled,
+    false,
+  );
+  assert.equal(
+    ui.nodes.reservation_slot.options.find((option) => option.value === "16")
+      .disabled,
+    true,
+  );
+  assert.equal(
+    ui.nodes["reservation-list"].children[0].textContent,
+    "4 PM — Reserved",
+  );
+});
+
+test("reservations date widget still works without the booking form or inline adapter", async (t) => {
+  const ui = fixture(async () => response([{ reservation_slot: 18 }]), {
+    booking: false,
+  });
+  t.after(ui.cleanup);
+  await tick();
+  assert.equal(
+    ui.nodes["reservation-list"].children[0].textContent,
+    "6 PM — Reserved",
+  );
+  assert.equal(ui.app.attributes["aria-busy"], "false");
 });

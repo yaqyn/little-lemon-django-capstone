@@ -3,6 +3,7 @@ from datetime import date
 
 from django.conf import settings
 from django.core.exceptions import RequestDataTooBig
+from django.core.serializers.json import DjangoJSONEncoder
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
@@ -136,7 +137,24 @@ def book(request):
 
 @require_GET
 def reservations(request):
-    return render(request, "restaurant/reservations.html", booking_context())
+    records = reservation_records(Booking.objects.all(), request.user)
+    if request.GET.get("format") == "json":
+        response = JsonResponse(records, safe=False)
+    else:
+        context = booking_context()
+        context["bookings_json"] = json.dumps(records, cls=DjangoJSONEncoder, indent=2)
+        response = render(request, "restaurant/reservations.html", context)
+    response["Cache-Control"] = "no-store"
+    return response
+
+
+def reservation_records(queryset, user):
+    """Share the public/staff representation across date and all-date views."""
+    records = list(queryset.values("id", "first_name", "reservation_date", "reservation_slot"))
+    if not user.is_staff:
+        for record in records:
+            record["first_name"] = "Reserved"
+    return records
 
 
 @require_GET
@@ -145,10 +163,7 @@ def bookings_json(request):
         selected_date = parse_date(request.GET.get("date"))
     except ValidationError as error:
         return JsonResponse(error.detail, status=400)
-    records = list(Booking.objects.filter(reservation_date=selected_date).values("id", "first_name", "reservation_date", "reservation_slot"))
-    if not request.user.is_staff:
-        for record in records:
-            record["first_name"] = "Reserved"
+    records = reservation_records(Booking.objects.filter(reservation_date=selected_date), request.user)
     response = JsonResponse(records, safe=False)
     response["Cache-Control"] = "no-store"
     return response

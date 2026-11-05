@@ -31,6 +31,12 @@
     <p>Enable JavaScript to load reservations, or <a href="/bookings?date={% now 'Y-m-d' %}">view today's reservations as JSON</a>.</p>
   </noscript>
 </section>
+<section class="wrap section reservations-page" aria-labelledby="all-bookings-heading">
+  <h2 id="all-bookings-heading">All reservations as JSON</h2>
+  <p>Every reserved date and time is listed below. Guest names are visible only to signed-in staff.</p>
+  <p><a href="{% url 'reservations' %}?format=json">Open all reservations as JSON</a></p>
+  <pre class="reservation-json" id="all-bookings-json" tabindex="0" aria-label="All reservations as JSON">{{ bookings_json }}</pre>
+</section>
 {% endblock %}
 {% block scripts %}
   <script src="{% static 'js/booking.js' %}" defer></script>

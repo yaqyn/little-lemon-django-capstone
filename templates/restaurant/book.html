@@ -23,6 +23,8 @@
         <input type="date"
                id="reservation_date"
                name="reservation_date"
+               value="{{ today }}"
+               min="{{ today }}"
                required
                aria-describedby="reservation_date-error">
         <p class="field-error" id="reservation_date-error"></p>
@@ -65,5 +67,9 @@
 </section>
 {% endblock %}
 {% block scripts %}
+  <script>
+    // Keep the booking transport visible in HTML source for the reservation assignment.
+    window.littleLemonBookingFetch = (url, options) => fetch(url, options);
+  </script>
   <script src="{% static 'js/booking.js' %}" defer></script>
 {% endblock %}

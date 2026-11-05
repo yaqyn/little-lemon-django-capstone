@@ -56,3 +56,12 @@ is a local capstone application, not a verified public production deployment.
 Production static hosting, HTTPS infrastructure, backups, and operational controls
 remain deployment responsibilities. Local DEBUG-mode deployment checks correctly
 warn about development HTTP; the production-mode check above was clean.
+
+## Booking assignment compatibility update
+
+The later update in [booking-assignment.md](booking-assignment.md) records the
+13-requirement audit and supersedes the initial test counts above: 46 MySQL Django
+tests, 46 SQLite fallback tests, 9 JavaScript behavior tests, and 43 live HTTP
+checks passed. The native browser calendar remains unverified because connected
+browser navigation failed. Requirements 6 and 12 were fixed without replacing
+the capstone, changing its models, or relaxing staff permissions.

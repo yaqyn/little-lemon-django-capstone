@@ -26,7 +26,7 @@ Visual decisions and runtime token mapping are recorded in [DESIGN.md](DESIGN.md
 
 Home/menu → book retains shared navigation. Booking chooses today's Chicago date initially, reads booked times, disables unavailable/past slots, submits CSRF-protected JSON, then announces server-confirmed success and refreshes availability. Inputs remain in place after errors. A database conflict refreshes the current list before retry. Page URLs record the selected date for share/reload. Native date and select popups deliberately use platform locale and geometry.
 
-Reservations uses the same date-loading routine without a mutation form. JSON retrieval is available at /bookings?date=YYYY-MM-DD. Navigation is semantic links; the skip link reaches main content. Focus rings are visible and mobile reading order follows document order.
+Reservations uses the same date-loading routine without a mutation form. Below that widget, a server-rendered, HTML-escaped JSON block shows all bookings across all dates; /reservations/?format=json returns the same array. Both representations share name redaction with /bookings?date=YYYY-MM-DD, which retains its date filter. Responses use Cache-Control: no-store. The booking page supplies the active inline Fetch transport for assignment source inspection; the shared script owns availability, submission, and recovery. Navigation is semantic links; the skip link reaches main content. Focus rings are visible and mobile reading order follows document order.
 
 ## Async and recovery
 

@@ -4,10 +4,6 @@
 
 Browse a restaurant menu, reserve an available hour, and manage menu items and bookings through a Django REST API.
 
-<a href="https://www.coursera.org/learn/back-end-developer-capstone"><img src="readme-assets/meta-logo-on-white.png" width="144" height="144" alt="Meta, course provider"></a>
-
-**A Meta expert-guided project on Coursera.** Built from the [Back-End Developer Capstone](https://www.coursera.org/learn/back-end-developer-capstone), part of the [Meta Back-End Developer Professional Certificate](https://www.coursera.org/professional-certificates/meta-back-end-developer). Coursera lists the course instructor as **Taught by Meta Experts**.
-
 The website reads its menu from MySQL and uses Fetch to refresh availability and submit reservations. A database constraint protects each date and time slot, while staff permissions protect customer records and menu changes. The restaurant and its menu are fictional demonstration content.
 
 [Run the project](#-installation) · [Endpoint reference](Readme.txt) · [Insomnia collection](docs/insomnia.json)
@@ -76,7 +72,7 @@ Open <http://127.0.0.1:8000/>. Stop with Ctrl+C and `docker compose down`; the n
 pipenv run python manage.py runserver
 ```
 
-Open <http://127.0.0.1:8000/>. Browse `/menu/`, choose **Book a table**, select an available hour, enter a name, and reserve it. The hour becomes unavailable without a page reload. `/reservations/` shows availability for a chosen date. Stop the development server with Ctrl+C.
+Open <http://127.0.0.1:8000/>. Browse `/menu/`, choose **Book a table**, select an available hour, enter a name, and reserve it. The hour becomes unavailable without a page reload. `/reservations/` shows availability for a chosen date and every booking as JSON. Open `/reservations/?format=json` for the complete JSON response. Stop the development server with Ctrl+C.
 
 ```bash
 curl http://127.0.0.1:8000/api/menu-items/
@@ -97,6 +93,7 @@ The response contains `count`, `next`, `previous`, and a `results` list of seede
 | `/api/bookings/` | GET, POST | Staff list; public create |
 | `/api/bookings/{id}/` | GET, PUT, PATCH, DELETE | Staff only |
 | `/bookings?date=YYYY-MM-DD` | GET | Public redacted availability |
+| `/reservations/?format=json` | GET | All dates; names redacted for public visitors |
 | `/auth/users/` | POST | Public registration |
 | `/auth/token/login/` | POST | Public login |
 | `/auth/token/logout/` | POST | Authenticated |
@@ -146,7 +143,7 @@ pipenv run python manage.py test --settings=littlelemon.test_settings
 
 The JavaScript tests require Node.js 18+ and execute the booking script with simulated DOM and Fetch fixtures. With the development server running against the same configured database, `pipenv run python scripts/smoke_http.py` exercises real HTTP requests and cleans up its temporary records. It refuses production-mode settings.
 
-Tests exercise website rendering, full menu/booking CRUD, role boundaries, date filtering, JSON redaction, invalid inputs and IDs, database uniqueness, registration, token revocation, and the website's CSRF boundary. SQLite tests do not verify a MySQL connection. See [docs/verification.md](docs/verification.md) for execution evidence recorded during delivery.
+Tests exercise website rendering, full menu/booking CRUD, role boundaries, date filtering, JSON redaction, invalid inputs and IDs, database uniqueness, registration, token revocation, and the website's CSRF boundary. SQLite tests do not verify a MySQL connection. See [docs/verification.md](docs/verification.md) for execution evidence recorded during delivery and [the booking assignment audit](docs/booking-assignment.md) for all 13 reservation requirements.
 
 ## <img src="readme-assets/icons/security.svg" width="24" height="24" alt=""> Security and limitations
 
@@ -156,4 +153,6 @@ This is a local development and peer-review application. Before public hosting, 
 
 Technical references: [Django MySQL backend](https://docs.djangoproject.com/en/5.2/ref/databases/#mysql-notes), [Djoser token endpoints](https://djoser.readthedocs.io/en/latest/token_endpoints.html), and [DRF token authentication](https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication).
 
-> Learning Journey Project: Meta provides the course guidance and Little Lemon project brief. Abdulrahman M. Yaqyn maintains this implementation and its verification. The Meta logo identifies the course provider; the trademark belongs to Meta.
+> <img src="readme-assets/meta-badge.svg" width="144" height="50" alt="Meta">
+>
+> Guided project from the **Meta Back-End Developer Professional Certificate**, taught by **Meta Experts**. The curriculum provides the Little Lemon project brief; Abdulrahman M. Yaqyn maintains this implementation and its verification.

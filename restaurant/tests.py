@@ -2,6 +2,7 @@
 from datetime import timedelta
 from decimal import Decimal
 import json
+import re
 
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError, transaction
@@ -287,3 +288,91 @@ class RestaurantTests(TestCase):
         response = self.api.post("/api/menu-items/", self.menu_payload(), format="json")
         self.assertEqual(response.status_code, 201, response.data)
         self.assertEqual(self.api.get("/api/bookings/").status_code, 200)
+
+
+    def test_reservations_page_displays_all_dates_as_json(self):
+        self.make_booking()
+        self.make_booking(reservation_date=str(self.day + timedelta(days=1)), reservation_slot=13)
+        response = self.client.get("/reservations/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="all-bookings-json"')
+        records = json.loads(response.context["bookings_json"])
+        self.assertEqual(len(records), 2)
+        self.assertEqual({record["reservation_date"] for record in records},
+                         {str(self.day), str(self.day + timedelta(days=1))})
+        self.assertTrue(all(record["first_name"] == "Reserved" for record in records))
+        self.assertNotIn("Jordan", response.content.decode())
+        self.assertEqual(response.headers["Cache-Control"], "no-store")
+
+    def test_reservations_json_contains_all_records_without_pagination(self):
+        for offset in range(15):
+            self.make_booking(reservation_date=str(self.day + timedelta(days=offset)))
+        response = self.client.get("/reservations/?format=json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["Content-Type"], "application/json")
+        self.assertEqual(len(response.json()), 15)
+        self.assertTrue(all(record["first_name"] == "Reserved" for record in response.json()))
+        self.assertEqual(response.headers["Cache-Control"], "no-store")
+
+    def test_empty_reservations_json_and_html_are_valid(self):
+        response = self.client.get("/reservations/?format=json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), [])
+        page = self.client.get("/reservations/")
+        self.assertEqual(json.loads(page.context["bookings_json"]), [])
+        self.assertContains(page, 'id="all-bookings-json"')
+
+    def test_staff_can_read_all_reservation_names(self):
+        self.make_booking()
+        self.client.force_login(self.staff)
+        response = self.client.get("/reservations/?format=json")
+        self.assertEqual(response.json()[0]["first_name"], "Jordan")
+        self.assertEqual(response.headers["Cache-Control"], "no-store")
+        page = self.client.get("/reservations/")
+        self.assertEqual(json.loads(page.context["bookings_json"])[0]["first_name"], "Jordan")
+        self.assertEqual(page.headers["Cache-Control"], "no-store")
+
+    def test_regular_users_receive_redacted_all_reservations(self):
+        self.make_booking()
+        self.client.force_login(self.user)
+        response = self.client.get("/reservations/?format=json")
+        self.assertEqual(response.json()[0]["first_name"], "Reserved")
+        self.assertNotIn("Jordan", response.content.decode())
+
+    def test_staff_reservation_json_display_escapes_html(self):
+        malicious_name = '</pre><script>alert("reservation")</script>'
+        self.make_booking(first_name=malicious_name)
+        self.client.force_login(self.staff)
+        page = self.client.get("/reservations/")
+        self.assertEqual(json.loads(page.context["bookings_json"])[0]["first_name"], malicious_name)
+        self.assertNotIn(malicious_name, page.content.decode())
+        self.assertContains(page, "&lt;script&gt;")
+
+    def test_all_reservations_json_is_not_limited_by_selected_date(self):
+        self.make_booking()
+        self.make_booking(reservation_date=str(self.day + timedelta(days=1)))
+        response = self.client.get(f"/reservations/?format=json&date={self.day}")
+        self.assertEqual(len(response.json()), 2)
+        filtered = self.client.get(f"/bookings?date={self.day}")
+        self.assertEqual(len(filtered.json()), 1)
+
+    def test_booking_html_contains_native_date_today_and_active_fetch(self):
+        response = self.client.get("/book/")
+        source = response.content.decode()
+        date_input = re.search(r'<input\b(?=[^>]*\bid="reservation_date")[^>]*>', source).group()
+        today = timezone.localdate().isoformat()
+        self.assertIn('type="date"', date_input)
+        self.assertIn(f'value="{today}"', date_input)
+        self.assertIn(f'min="{today}"', date_input)
+        scripts = re.findall(r'<script\b[^>]*>(.*?)</script>', source, re.DOTALL)
+        self.assertTrue(any("littleLemonBookingFetch" in script and re.search(r'\bfetch\s*\(', script)
+                            for script in scripts), "Booking HTML must contain an executable fetch call.")
+
+    def test_website_duplicate_booking_rejected_without_creating_second_record(self):
+        first = self.client.post("/book/", json.dumps(self.payload()), content_type="application/json")
+        self.assertEqual(first.status_code, 201)
+        duplicate = self.client.post("/book/", json.dumps(self.payload(first_name="Second diner")),
+                                     content_type="application/json")
+        self.assertEqual(duplicate.status_code, 400)
+        self.assertIn("reservation_slot", duplicate.json())
+        self.assertEqual(Booking.objects.count(), 1)

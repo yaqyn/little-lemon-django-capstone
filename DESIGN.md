@@ -68,6 +68,8 @@ The shared base owns header, navigation, skip link, and footer. The menu-card in
 
 Native date and select controls intentionally delegate calendar/popup geometry and locale to the browser/OS, as requested by the assignment. Their labels and field errors are app-owned. Errors are persistent text with aria-invalid and aria-describedby; invalid submission focuses the first failed field. The app never invokes native validation bubbles or native dialogs.
 
+The reservations page includes a keyboard-focusable, bounded JSON block using existing surface and border tokens. Text wraps to avoid page overflow; Django autoescaping protects staff-visible names.
+
 `static/js/booking.js` owns availability loading and mutation feedback. Loading, empty (“No Bookings”), error with retry, success, and duplicate-conflict paths use stable inline regions. Customer names remain private in public availability views. Request generations prevent old date results from replacing newer state. No animation is required; reduced-motion explicitly removes any transition or animation.
 
 ## Do's and Don'ts

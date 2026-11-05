@@ -56,7 +56,7 @@ suffix = secrets.token_hex(8)
 username = 'smoke_' + suffix
 staffname = 'staff_' + suffix
 password = secrets.token_urlsafe(24)
-item_id = booking_id = category_id = None
+item_id = booking_id = other_booking_id = category_id = None
 try:
     request('/auth/users/', 'POST', {'username': username, 'password': password}, expected=201)
     login = request('/auth/token/login/', 'POST', {'username': username, 'password': password})
@@ -81,13 +81,25 @@ try:
     request('/api/bookings/', 'POST', booking, expected=400)
     available = request(f'/bookings?date={day}')
     assert any(row['reservation_slot'] == 12 and row['first_name'] == 'Reserved' for row in available)
+    other_booking_id = request('/api/bookings/', 'POST', {**booking, 'reservation_date': str(day + timedelta(days=1))}, expected=201)['id']
+    all_bookings = request('/reservations/?format=json')
+    assert {booking_id, other_booking_id}.issubset({row['id'] for row in all_bookings})
+    assert all(row['first_name'] == 'Reserved' for row in all_bookings)
+    filtered = request(f'/bookings?date={day}')
+    assert other_booking_id not in {row['id'] for row in filtered}
     request(f'/api/bookings/?date={day}', token=staff_token)
     request(f'/api/bookings/{booking_id}/', token=staff_token)
     request(f'/api/bookings/{booking_id}/', 'PUT', booking, staff_token)
     request(f'/api/bookings/{booking_id}/', 'PATCH', {'first_name': 'Updated smoke'}, staff_token)
     assets = Assets()
     for path in ['/', '/about/', '/menu/', f'/menu/{item_id}/', '/book/', '/reservations/']:
-        assets.feed(request(path))
+        page = request(path)
+        if path == '/book/':
+            assert '=> fetch(url, options)' in page
+        if path == '/reservations/':
+            assert 'id="all-bookings-json"' in page
+            assert str(day) in page and str(day + timedelta(days=1)) in page
+        assets.feed(page)
     for path in sorted(assets.paths):
         request(path)
     request(f'/api/bookings/{booking_id}/', 'DELETE', token=staff_token, expected=204)
@@ -99,6 +111,8 @@ try:
 finally:
     if booking_id:
         Booking.objects.filter(pk=booking_id).delete()
+    if other_booking_id:
+        Booking.objects.filter(pk=other_booking_id).delete()
     if item_id:
         MenuItem.objects.filter(pk=item_id).delete()
     if category_id:

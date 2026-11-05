@@ -532,6 +532,17 @@ select {
     width: 100%;
   }
 }
+.reservation-json {
+  max-height: 32rem;
+  overflow: auto;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.875rem;
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

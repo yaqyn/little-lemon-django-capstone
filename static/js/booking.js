@@ -2,6 +2,8 @@
   "use strict";
   const app = document.querySelector("[data-booking-app]");
   if (!app) return;
+  const request =
+    window.littleLemonBookingFetch || ((url, options) => fetch(url, options));
   const date = document.getElementById("reservation_date");
   const slot = document.getElementById("reservation_slot");
   const form = document.getElementById("booking-form");
@@ -75,7 +77,7 @@
     app.setAttribute("aria-busy", "true");
     const timeout = setTimeout(() => requestController.abort(), 12000);
     try {
-      const response = await fetch(
+      const response = await request(
         `/bookings?date=${encodeURIComponent(date.value)}`,
         {
           signal: requestController.signal,
@@ -178,7 +180,7 @@
     updateSubmit();
     submit.textContent = "Reserving…";
     try {
-      const response = await fetch("/book/", {
+      const response = await request("/book/", {
         method: "POST",
         signal: postController.signal,
         headers: {
