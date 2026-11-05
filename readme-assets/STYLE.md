@@ -5,3 +5,13 @@ The cover is an editable, self-contained 1600 × 640 SVG. Its forest green backg
 The small Meta badge is anchored in the cover's bottom-right corner. A rounded white plate provides clear padding around the blue symbol and dark Meta text, with no logo shapes touching the plate edge. `meta-badge.svg` supplies the same treatment for the closing project attribution. Both assets inline their logo paths and require no external images or fonts. The Meta text is typeset in a system sans-serif; it is not a replacement official wordmark asset.
 
 `meta-symbol.svg` is the unmodified high-resolution vector symbol from the user-specified source: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/meta.svg (retrieved 2026-11-05). Its original paths, gradients, colors, and aspect ratio are preserved inside the badge. The Meta trademark belongs to Meta and identifies the project's curriculum context. Brand reference: https://www.meta.com/brand/resources/meta/company-brand/ .
+
+## Website captures
+
+The four files under `screenshots/` are actual localhost UI captures supplied by
+Abdulrahman M. Yaqyn on 2026-11-05: the menu, narrow homepage introduction,
+featured dishes, and narrow booking form. These are screenshots of the Django
+restaurant app, not the separate database notebook. The supplied crops and
+original dimensions are preserved; no cursor is visible. ImageMagick converted
+them to lossless WebP without resizing or retouching. ExifTool removed embedded
+metadata and retained only the owner's XMP Creator and Rights fields.

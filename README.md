@@ -16,6 +16,31 @@ The website reads its menu from MySQL and uses Fetch to refresh availability and
 - Public reservation creation; staff-controlled reservation browsing, updates, and deletion.
 - User registration, hashed passwords, token login/logout, Django Admin, and executable behavior tests.
 
+## Website screenshots
+
+Actual captures of the local Django website, supplied by the project owner.
+
+**Menu:** items and prices read from the restaurant database.
+
+![Little Lemon menu showing five dishes, descriptions, categories and prices](readme-assets/screenshots/menu.webp)
+
+<details>
+<summary>Homepage and booking form</summary>
+
+**Homepage introduction** at a narrow viewport.
+
+<img src="readme-assets/screenshots/homepage-introduction.webp" width="486" height="413" alt="Little Lemon homepage introduction with Book a table and Explore the menu links">
+
+**Featured dishes** on the homepage.
+
+![Bruschetta, Greek salad and lemon dessert featured on the homepage](readme-assets/screenshots/featured-dishes.webp)
+
+**Booking form** at a narrow viewport, with name, native date picker and time selection.
+
+<img src="readme-assets/screenshots/booking-form.webp" width="466" height="767" alt="Little Lemon booking form showing name, reservation date, time dropdown and Reserve a table button">
+
+</details>
+
 ## <img src="readme-assets/icons/installation.svg" width="24" height="24" alt=""> Installation
 
 Requires Python 3.14, Pipenv, and MySQL 8 (the development container uses MySQL 8.4). Building `mysqlclient` requires compiler tools, `pkg-config`, Python development headers, and MySQL client headers. On Debian/Ubuntu, install `build-essential pkg-config python3-dev default-libmysqlclient-dev`; use equivalent packages on other systems.
