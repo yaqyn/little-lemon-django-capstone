@@ -2,7 +2,12 @@ Little Lemon Restaurant - Django REST API Capstone
 =================================================
 
 A fictional restaurant website and MySQL-backed menu/reservation API, built for
-Coursera's Back-End Developer Capstone. Technologies: Python 3.14, Django 5.2,
+Meta's expert-guided Back-End Developer Capstone on Coursera, part of the Meta
+Back-End Developer Professional Certificate. The course is taught by Meta Experts.
+Course: https://www.coursera.org/learn/back-end-developer-capstone
+
+Implementation and verification: Abdulrahman M. Yaqyn.
+Technologies: Python 3.14, Django 5.2,
 Django REST Framework, MySQL 8, mysqlclient, Djoser, DRF TokenAuthentication,
 Pipenv, Django templates, HTML, CSS, vanilla JavaScript Fetch, Git and GitHub.
 

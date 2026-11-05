@@ -1,8 +1,12 @@
 ![Little Lemon restaurant menu and reservations](readme-assets/cover.svg)
 
-# Little Lemon — Django restaurant and reservation API
+# Little Lemon — Meta Back-End Developer Capstone
 
 Browse a restaurant menu, reserve an available hour, and manage menu items and bookings through a Django REST API.
+
+<a href="https://www.coursera.org/learn/back-end-developer-capstone"><img src="readme-assets/meta-logo-on-white.png" width="144" height="144" alt="Meta, course provider"></a>
+
+**A Meta expert-guided project on Coursera.** Built from the [Back-End Developer Capstone](https://www.coursera.org/learn/back-end-developer-capstone), part of the [Meta Back-End Developer Professional Certificate](https://www.coursera.org/professional-certificates/meta-back-end-developer). Coursera lists the course instructor as **Taught by Meta Experts**.
 
 The website reads its menu from MySQL and uses Fetch to refresh availability and submit reservations. A database constraint protects each date and time slot, while staff permissions protect customer records and menu changes. The restaurant and its menu are fictional demonstration content.
 
@@ -152,4 +156,4 @@ This is a local development and peer-review application. Before public hosting, 
 
 Technical references: [Django MySQL backend](https://docs.djangoproject.com/en/5.2/ref/databases/#mysql-notes), [Djoser token endpoints](https://djoser.readthedocs.io/en/latest/token_endpoints.html), and [DRF token authentication](https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication).
 
-> Learning Journey Project: built for the Coursera Back-End Developer Capstone's Little Lemon restaurant requirements. The restaurant identity and assignment context belong to that learning exercise; implementation and verification are maintained by Abdulrahman M. Yaqyn.
+> Learning Journey Project: Meta provides the course guidance and Little Lemon project brief. Abdulrahman M. Yaqyn maintains this implementation and its verification. The Meta logo identifies the course provider; the trademark belongs to Meta.
