@@ -4,6 +4,7 @@ Executed on 5 November 2026 against the application source in this repository.
 
 | Check | Observed result |
 | --- | --- |
+| GitHub Actions MySQL workflow | Passed on published application commit; workflow repeats migration, Django, static collection, and JavaScript checks |
 | Pipenv lock verification and `pipenv sync --dev` | Lock current; installation succeeded |
 | Dependency compatibility (`uv pip check --python .venv/bin/python`) | 23 compatible packages |
 | Docker image build and Compose container checks | Build succeeded; Django check clean and 37 MySQL tests passed inside the container |
