@@ -140,6 +140,19 @@ class RestaurantTests(TestCase):
             with self.subTest(payload=payload):
                 self.assertEqual(self.api.post("/api/bookings/", payload, format="json").status_code, 400)
 
+    def test_booking_endpoints_reject_unexpected_fields(self):
+        payload = self.payload(party_size=4)
+        api_response = self.api.post("/api/bookings/", payload, format="json")
+        website_response = self.client.post(
+            "/book/", json.dumps(payload), content_type="application/json"
+        )
+
+        for response in [api_response, website_response]:
+            with self.subTest(path=response.request["PATH_INFO"]):
+                self.assertEqual(response.status_code, 400)
+                self.assertIn("party_size", response.json()["non_field_errors"][0])
+        self.assertEqual(Booking.objects.count(), 0)
+
     def test_booking_list_protected(self):
         self.assertIn(self.api.get("/api/bookings/").status_code, [401, 403])
         self.api.force_authenticate(self.user)

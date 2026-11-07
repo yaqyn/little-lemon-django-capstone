@@ -31,6 +31,16 @@ class BookingSerializer(serializers.ModelSerializer):
         # Explicit validation also handles PATCH against the instance's unchanged values.
         validators = []
 
+    def to_internal_value(self, data):
+        if hasattr(data, "keys"):
+            unexpected = sorted(set(data.keys()) - set(self.fields))
+            if unexpected:
+                names = ", ".join(unexpected)
+                raise serializers.ValidationError(
+                    {"non_field_errors": [f"Unexpected reservation field(s): {names}."]}
+                )
+        return super().to_internal_value(data)
+
     def validate(self, attrs):
         date = attrs.get("reservation_date", getattr(self.instance, "reservation_date", None))
         slot = attrs.get("reservation_slot", getattr(self.instance, "reservation_slot", None))
