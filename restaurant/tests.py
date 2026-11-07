@@ -179,9 +179,11 @@ class RestaurantTests(TestCase):
             response = self.api.get(f"/bookings{suffix}?date={self.day}")
             self.assertEqual(response.status_code, 200)
             self.assertEqual(len(response.json()), 1)
-            self.assertEqual(response.json()[0]["first_name"], "Reserved")
             self.assertEqual(response.json()[0]["reservation_date"], str(self.day))
-            self.assertNotIn("Jordan", response.content.decode())
+            self.assertEqual(
+                set(response.json()[0]),
+                {"reservation_date", "reservation_slot"},
+            )
 
     def test_compatibility_route_empty_and_bad_date(self):
         self.assertEqual(self.api.get(f"/bookings?date={self.day}").json(), [])
@@ -300,8 +302,7 @@ class RestaurantTests(TestCase):
         self.assertEqual(len(records), 2)
         self.assertEqual({record["reservation_date"] for record in records},
                          {str(self.day), str(self.day + timedelta(days=1))})
-        self.assertTrue(all(record["first_name"] == "Reserved" for record in records))
-        self.assertNotIn("Jordan", response.content.decode())
+        self.assertTrue(all(set(record) == {"reservation_date", "reservation_slot"} for record in records))
         self.assertEqual(response.headers["Cache-Control"], "no-store")
 
     def test_reservations_json_contains_all_records_without_pagination(self):
@@ -311,7 +312,9 @@ class RestaurantTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["Content-Type"], "application/json")
         self.assertEqual(len(response.json()), 15)
-        self.assertTrue(all(record["first_name"] == "Reserved" for record in response.json()))
+        self.assertTrue(
+            all(set(record) == {"reservation_date", "reservation_slot"} for record in response.json())
+        )
         self.assertEqual(response.headers["Cache-Control"], "no-store")
 
     def test_empty_reservations_json_and_html_are_valid(self):
@@ -336,8 +339,10 @@ class RestaurantTests(TestCase):
         self.make_booking()
         self.client.force_login(self.user)
         response = self.client.get("/reservations/?format=json")
-        self.assertEqual(response.json()[0]["first_name"], "Reserved")
-        self.assertNotIn("Jordan", response.content.decode())
+        self.assertEqual(
+            set(response.json()[0]),
+            {"reservation_date", "reservation_slot"},
+        )
 
     def test_staff_reservation_json_display_escapes_html(self):
         malicious_name = '</pre><script>alert("reservation")</script>'

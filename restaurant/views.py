@@ -150,11 +150,9 @@ def reservations(request):
 
 def reservation_records(queryset, user):
     """Share the public/staff representation across date and all-date views."""
-    records = list(queryset.values("id", "first_name", "reservation_date", "reservation_slot"))
-    if not user.is_staff:
-        for record in records:
-            record["first_name"] = "Reserved"
-    return records
+    if user.is_staff:
+        return list(queryset.values("id", "first_name", "reservation_date", "reservation_slot"))
+    return list(queryset.values("reservation_date", "reservation_slot"))
 
 
 @require_GET
